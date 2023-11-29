@@ -18,7 +18,8 @@ class CustomizedResponseEntityExceptionHandler: ResponseEntityExceptionHandler()
         val exceptionResponse = ExceptionResponse(
             Date(),
             ex.message,
-            request.getDescription(false)
+            request.getDescription(false),
+            HttpStatus.INTERNAL_SERVER_ERROR
         )
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -29,12 +30,10 @@ class CustomizedResponseEntityExceptionHandler: ResponseEntityExceptionHandler()
         val exceptionResponse = ExceptionResponse(
             Date(),
             ex.message,
-            request.getDescription(false)
+            request.getDescription(false),
+            HttpStatus.BAD_REQUEST
         )
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
     }
-
-
-
 
 }
