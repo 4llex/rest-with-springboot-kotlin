@@ -36,4 +36,26 @@ class CustomizedResponseEntityExceptionHandler: ResponseEntityExceptionHandler()
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(InvalidMathOperationException::class)
+    fun handleDivisionByZeroException(ex: Exception, request: WebRequest): ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(
+            Date(),
+            ex.message,
+            request.getDescription(false),
+            HttpStatus.BAD_REQUEST
+        )
+        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(NaoExisteRaizDeNumeroNegativoException::class)
+    fun handleRaizNegativaException(ex: Exception, request: WebRequest): ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(
+            Date(),
+            ex.message,
+            request.getDescription(false),
+            HttpStatus.NOT_ACCEPTABLE
+        )
+        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
+    }
+
 }
