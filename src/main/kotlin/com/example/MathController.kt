@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.exceptions.UnsupportedMathOperationException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
@@ -16,7 +17,7 @@ class MathController {
             @PathVariable(value="numberTwo") numberTwo: String?
     ): Double {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo))
-            throw Exception()
+            throw UnsupportedMathOperationException("Please, set a numeric value!")
 
         return convertToDouble(numberOne) + convertToDouble(numberTwo)
     }
