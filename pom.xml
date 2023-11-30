@@ -47,10 +47,16 @@
 			<version>8.0.33</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.github.dozermapper</groupId>-->
+<!--			<artifactId>dozer-core</artifactId>-->
+<!--			<version>${dozer.version}</version>-->
+<!--		</dependency>-->
+
 		<dependency>
-			<groupId>com.github.dozermapper</groupId>
-			<artifactId>dozer-core</artifactId>
-			<version>${dozer.version}</version>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 		<!--
 		<dependency>
