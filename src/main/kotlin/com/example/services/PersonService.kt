@@ -1,6 +1,8 @@
 package com.example.services
 
+import com.example.data.vo.v1.PersonVO
 import com.example.exceptions.ResourceNotFoundException
+import com.example.mapper.DozerMapper
 import com.example.model.Person
 import com.example.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,23 +17,27 @@ class PersonService {
 
     private val logger = Logger.getLogger(PersonService::class.java.name)
 
-    fun findAll(): List<Person> {
+    fun findAll(): List<PersonVO> {
         logger.info("Finding All person!")
-
-        return personRepository.findAll()
+        val persons = personRepository.findAll()
+        return DozerMapper.parseListObjects(persons, PersonVO::class.java)
     }
 
-    fun findById(id: Long) : Person {
+    fun findById(id: Long) : PersonVO {
         logger.info("Finding one person!")
-        return personRepository.findById(id).orElseThrow { ResourceNotFoundException("No records found for this Id") }
+        val person = personRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("No records found for this Id") }
+        return DozerMapper.parseObject(person, PersonVO::class.java)
     }
 
-    fun create(person: Person): Person {
+    fun create(person: PersonVO): PersonVO {
         logger.info("Creating one person!")
-        return personRepository.save(person)
+        var entity: Person = DozerMapper.parseObject(person, Person::class.java)
+
+        return DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
     }
 
-    fun update(person: Person): Person {
+    fun update(person: PersonVO): PersonVO {
         logger.info("Trying update person!")
         val entity = personRepository.findById(person.id)
             .orElseThrow { ResourceNotFoundException("No records found for this Id") }
@@ -41,7 +47,7 @@ class PersonService {
         entity.address = person.address
         entity.gender = person.gender
 
-        return personRepository.save(entity)
+        return DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
     }
 
     fun delete(id: Long) {
