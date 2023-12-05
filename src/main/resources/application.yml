@@ -6,5 +6,5 @@ spring:
     password: Alex#1985
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false
