@@ -2,8 +2,8 @@ package com.example.controller
 
 import com.example.data.vo.v1.PersonVO
 import com.example.services.PersonService
+import com.example.util.MediaType
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -16,14 +16,14 @@ class PersonController(
     private lateinit var personService: PersonService
 
 
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     fun findAll(
     ): List<PersonVO> {
         return personService.findAll()
     }
 
     @GetMapping(value = ["/{id}"],
-        produces = [MediaType.APPLICATION_JSON_VALUE])
+        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     fun findById(
         @PathVariable(value = "id") id: Long
     ): PersonVO {
@@ -31,8 +31,8 @@ class PersonController(
     }
 
     @PostMapping(
-        produces = [MediaType.APPLICATION_JSON_VALUE],
-        consumes = [MediaType.APPLICATION_JSON_VALUE])
+        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
+        consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     fun create(
         @RequestBody person: PersonVO
     ): PersonVO {
@@ -40,15 +40,15 @@ class PersonController(
     }
 
     @PutMapping(
-        produces = [MediaType.APPLICATION_JSON_VALUE],
-        consumes = [MediaType.APPLICATION_JSON_VALUE])
+        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
+        consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     fun update(
         @RequestBody person: PersonVO
     ): PersonVO {
         return personService.update(person)
     }
 
-    @DeleteMapping(value = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @DeleteMapping(value = ["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     fun delete(
         @PathVariable(value = "id") id: Long
     ): ResponseEntity<*> {
