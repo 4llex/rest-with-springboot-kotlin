@@ -22,7 +22,14 @@ class PersonService {
     fun findAll(): List<PersonVO> {
         logger.info("Finding All person!")
         val persons = personRepository.findAll()
-        return DozerMapper.parseListObjects(persons, PersonVO::class.java)
+        val vos = DozerMapper.parseListObjects(persons, PersonVO::class.java)
+
+        for (person in vos) {
+            val withSelfRel = linkTo(PersonController::class.java).slash(person.key).withSelfRel()
+            person.add(withSelfRel)
+        }
+
+        return vos
     }
 
     fun findById(id: Long) : PersonVO {
@@ -41,7 +48,11 @@ class PersonService {
         logger.info("Creating one person!")
         var entity: Person = DozerMapper.parseObject(person, Person::class.java)
 
-        return DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
+        val personVO: PersonVO = DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
+
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        personVO.add(withSelfRel)
+        return personVO
     }
 
     fun update(person: PersonVO): PersonVO {
@@ -54,7 +65,11 @@ class PersonService {
         entity.address = person.address
         entity.gender = person.gender
 
-        return DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
+        val personVO: PersonVO = DozerMapper.parseObject(personRepository.save(entity), PersonVO::class.java)
+
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        personVO.add(withSelfRel)
+        return personVO
     }
 
     fun delete(id: Long) {
