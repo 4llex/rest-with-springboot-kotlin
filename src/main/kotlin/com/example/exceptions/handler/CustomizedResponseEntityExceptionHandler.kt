@@ -1,9 +1,6 @@
 package com.example.exceptions.handler
 
-import com.example.exceptions.ExceptionResponse
-import com.example.exceptions.InvalidMathOperationException
-import com.example.exceptions.NaoExisteRaizDeNumeroNegativoException
-import com.example.exceptions.ResourceNotFoundException
+import com.example.exceptions.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -58,6 +55,17 @@ class CustomizedResponseEntityExceptionHandler: ResponseEntityExceptionHandler()
             ex.message,
             request.getDescription(false),
             HttpStatus.NOT_ACCEPTABLE
+        )
+        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(RequiredObjectsNullException::class)
+    fun handleBadRequestException(ex: Exception, request: WebRequest): ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(
+            Date(),
+            ex.message,
+            request.getDescription(false),
+            HttpStatus.NOT_FOUND
         )
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
     }

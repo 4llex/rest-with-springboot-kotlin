@@ -2,6 +2,7 @@ package com.example.services
 
 import com.example.controller.PersonController
 import com.example.data.vo.v1.PersonVO
+import com.example.exceptions.RequiredObjectsNullException
 import com.example.exceptions.ResourceNotFoundException
 import com.example.mapper.DozerMapper
 import com.example.model.Person
@@ -44,7 +45,11 @@ class PersonService {
         return personVO
     }
 
-    fun create(person: PersonVO): PersonVO {
+    fun create(person: PersonVO?): PersonVO {
+        if (person == null) {
+            throw RequiredObjectsNullException()
+        }
+
         logger.info("Creating one person!")
         var entity: Person = DozerMapper.parseObject(person, Person::class.java)
 
@@ -55,7 +60,11 @@ class PersonService {
         return personVO
     }
 
-    fun update(person: PersonVO): PersonVO {
+    fun update(person: PersonVO?): PersonVO {
+        if (person == null) {
+            throw RequiredObjectsNullException()
+        }
+
         logger.info("Trying update person!")
         val entity = personRepository.findById(person.key)
             .orElseThrow { ResourceNotFoundException("No records found for this Id") }
