@@ -17,10 +17,10 @@ class OpenApiConfig {
                     .title("RESTful API with Kotlin and spring boot")
                     .version("v1")
                     .description("Some description here")
-                    .termsOfService("Termos de serviços ...")
+                    .termsOfService("link Termos de serviços ...")
                     .license(
                         License()
-                            .name("apache 2;0")
+                            .name("apache 2.0")
                             .url("https://license.com.br")
                     )
             )

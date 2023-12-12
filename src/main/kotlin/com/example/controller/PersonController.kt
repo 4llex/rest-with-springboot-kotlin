@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("persons")
+@RequestMapping("api/persons/v1")
 class PersonController(
 ) {
 
