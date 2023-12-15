@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import com.example.data.vo.v1.PersonVO
 import com.example.mapper.DozerMapper
 import com.example.model.Person
-import com.example.unittest.mapper.mocks.MockPerson
+import com.example.unittest.mocks.MockPerson
 
 class DozerMapperTest {
 

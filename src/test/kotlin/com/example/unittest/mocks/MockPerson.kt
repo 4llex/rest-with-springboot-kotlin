@@ -1,4 +1,4 @@
-package com.example.unittest.mapper.mocks
+package com.example.unittest.mocks
 
 import java.util.ArrayList
 import com.example.data.vo.v1.PersonVO
