@@ -1,14 +1,20 @@
 package com.example.config
 
 import com.example.serialization.converter.YamlJackson2HttpMessageConverter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig : WebMvcConfigurer {
+
+    //pega as origens CORS definidas no application.yaml
+    @Value("\${cors.originPatterns:default}")
+    private  val corsOriginPatterns: String = ""
 
     private val MEDIA_TYPE_APPLICATION_YML = MediaType.valueOf( "application/x-yaml")
 
@@ -38,5 +44,14 @@ class WebConfig : WebMvcConfigurer {
 //            .mediaType("x-yaml", MEDIA_TYPE_APPLICATION_YML)
     }
 
+
+    //Congiura CORS global
+    override fun addCorsMappings(registry: CorsRegistry) {
+        val allowedOrigins = corsOriginPatterns.split(",").toTypedArray()
+        registry.addMapping("/**")
+            .allowedMethods("*")
+            .allowedOrigins(*allowedOrigins)
+            .allowCredentials(true)
+    }
 
 }

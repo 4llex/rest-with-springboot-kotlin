@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+//@CrossOrigin
 @RestController
 @RequestMapping("api/persons/v1")
 @Tag(name = "People", description = "Endpoints for managing People")
@@ -50,6 +51,7 @@ class PersonController(
         return personService.findAll()
     }
 
+    //@CrossOrigin(origins = ["http://localhost:8080", "https://com.example"])
     @GetMapping(value = ["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     @Operation(summary = "Finds a Person", description = "Finds a Person", tags = ["People"],
         responses = [
@@ -77,6 +79,7 @@ class PersonController(
         return personService.findById(id)
     }
 
+    //@CrossOrigin(origins = ["http://localhost:8080", "https://com.example"])
     @PostMapping(
         produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
         consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
