@@ -1,6 +1,6 @@
 package com.example.integrationtests.swagger
 
-import com.example.integrationtests.ConfigsTest
+import com.example.integrationtests.TestConfigs
 import com.example.integrationtests.testcontainers.AbstractIntegrationTest
 import io.restassured.RestAssured.given
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -14,7 +14,7 @@ class SwaggerIntegrationTest() : AbstractIntegrationTest() {
 	fun shouldDisplaySwaggerUiPage() {
 		val content = given()
 			.basePath("/swagger-ui/index.html")
-			.port(ConfigsTest.SERVER_PORT)
+			.port(TestConfigs.SERVER_PORT)
 				.`when`()
 			.get()
 			.then()
