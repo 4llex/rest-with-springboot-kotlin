@@ -7,5 +7,5 @@ data class ExceptionResponse (
     val timeStamp: Date,
     val message: String?,
     val details: String,
-    val httpResponseCode: HttpStatus,
+    val httpResponseCode: HttpStatus
 )

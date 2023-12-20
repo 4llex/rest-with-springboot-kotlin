@@ -65,9 +65,19 @@ class CustomizedResponseEntityExceptionHandler: ResponseEntityExceptionHandler()
             Date(),
             ex.message,
             request.getDescription(false),
-            HttpStatus.NOT_FOUND
+            HttpStatus.BAD_REQUEST
         )
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(InvalidJwtAuthenticationException::class)
+        fun handleInvalidJwtAuthenticationException(ex: Exception, request: WebRequest): ResponseEntity<ExceptionResponse> {
+            val exceptionResponse = ExceptionResponse(
+                Date(),
+                ex.message,
+                request.getDescription(false),
+                HttpStatus.FORBIDDEN
+            )
+            return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.FORBIDDEN)
+        }
 }
