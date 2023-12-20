@@ -1,14 +1,22 @@
 package com.example.security.jwt
 
 import com.auth0.jwt.JWT
+import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.example.data.vo.v1.TokenVO
+import com.example.exceptions.InvalidJwtAuthenticationException
 import jakarta.annotation.PostConstruct
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import java.lang.Exception
 import java.util.*
 
 @Service
@@ -69,4 +77,36 @@ class JwtTokenProvider {
             .trim()
     }
 
+    fun getAuthentication(token: String): Authentication {
+        val decodedJWT: DecodedJWT = decodedToken(token)
+        val userDetails: UserDetails = userDetailsService.loadUserByUsername(decodedJWT.subject)
+        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
+    }
+
+    private fun decodedToken(token: String): DecodedJWT {
+        val algorithm = Algorithm.HMAC256(secretKey.toByteArray())
+        val verifier: JWTVerifier = JWT.require(algorithm).build()
+        return verifier.verify(token)
+    }
+
+    fun resolveToken(req: HttpServletRequest): String? {
+        val bearerToken = req.getHeader("Authorization")
+        // Bearer shuiuhsindiuhnsiuhiudnisuhsohd
+        return if(!bearerToken.isNullOrBlank() && bearerToken.startsWith("Bearer ")) {
+            bearerToken.substring("Bearer ".length)
+        } else null
+    }
+
+    fun validateToken(token: String): Boolean {
+        val decodedJWT = decodedToken(token)
+        try {
+            if (decodedJWT.expiresAt.before(Date())) {
+                return false
+            }
+            //return !decodedJWT.expiresAt.before(Date())//TODO: check this condition!
+            return true
+        } catch (e: Exception) {
+            throw InvalidJwtAuthenticationException("Expired or invalid JWT token!")
+        }
+    }
 }
