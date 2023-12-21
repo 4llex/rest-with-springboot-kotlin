@@ -43,7 +43,7 @@ data class User(
 
 ): UserDetails {
 
-    val role: List<String?>
+    val roles: List<String?>
         get() {
             val roles: MutableList<String?> = ArrayList()
             for (permission in permissions!!) {
