@@ -36,7 +36,7 @@ class AuthService {
             val password = data.password
 
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
-            val user = userRepository.findByUserName(username)
+            val user = userRepository.findByUsername(username)
 
             val tokenResponse: TokenVO = if (user != null) {
                 tokenProvider.createAccessToken(username!!, user.roles)
@@ -45,6 +45,9 @@ class AuthService {
             }
             ResponseEntity.ok(tokenResponse)
         } catch (e: AuthenticationException) {
+            println(e.message)
+            println(e.cause)
+            println(e.stackTrace)
             throw BadCredentialsException("Invalid username or password supplied!")
         }
     }

@@ -18,7 +18,7 @@ class UserService(
     override fun loadUserByUsername(username: String?): UserDetails {
         logger.info("Finding on User with UserName $username")
 
-        val user = repository.findByUserName(username)
+        val user = repository.findByUsername(username)
         return user ?: throw UsernameNotFoundException("UserName $username not found!")
     }
 
