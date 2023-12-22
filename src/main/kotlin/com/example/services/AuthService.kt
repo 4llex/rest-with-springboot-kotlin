@@ -35,7 +35,9 @@ class AuthService {
             val username = data.username
             val password = data.password
 
+            //Autentica o usuario
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
+
             val user = userRepository.findByUsername(username)
 
             val tokenResponse: TokenVO = if (user != null) {
@@ -50,6 +52,19 @@ class AuthService {
             println(e.stackTrace)
             throw BadCredentialsException("Invalid username or password supplied!")
         }
+    }
+
+    fun refreshToken(username: String, refreshToken: String): ResponseEntity<*> {
+        logger.info("Trying get refresh token to user $username")
+
+        val user = userRepository.findByUsername(username)
+
+        val tokenResponse: TokenVO = if (user != null) {
+            tokenProvider.refreshToken(refreshToken)
+        } else {
+            throw UsernameNotFoundException("Username $username not found!")
+        }
+        return ResponseEntity.ok(tokenResponse)
     }
 
 }
