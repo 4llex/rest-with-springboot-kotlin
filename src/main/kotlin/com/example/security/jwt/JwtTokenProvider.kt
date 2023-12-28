@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import java.lang.Exception
 import java.util.*
 
 @Service
@@ -96,7 +95,12 @@ class JwtTokenProvider {
     private fun decodedToken(token: String): DecodedJWT {
         val algorithm = Algorithm.HMAC256(secretKey.toByteArray())
         val verifier: JWTVerifier = JWT.require(algorithm).build()
-        return verifier.verify(token)
+        try {
+            return verifier.verify(token)
+        } catch (e: Exception) {
+            throw InvalidJwtAuthenticationException("invalid JWT token!")
+        }
+
     }
 
     fun resolveToken(req: HttpServletRequest): String? {

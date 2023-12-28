@@ -31,13 +31,10 @@ class SecurityConfig {
     @Bean
     fun passwordEncoder() : PasswordEncoder {
         val encoders: MutableMap<String, PasswordEncoder> = HashMap()
-
         val pbkdf2Encoder = Pbkdf2PasswordEncoder("", 8, 185000, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256)
         encoders["pbkdf2"] = pbkdf2Encoder
-
         val passwordEncoder = DelegatingPasswordEncoder("pbkdf2", encoders)
         passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder)
-
         return passwordEncoder
     }
 
@@ -52,7 +49,7 @@ class SecurityConfig {
         val customFilter = JwtTokenFilter(tokenProvider)
 
         return http
-            .httpBasic {basic: HttpBasicConfigurer<HttpSecurity> -> basic.disable()}
+            .httpBasic { basic: HttpBasicConfigurer<HttpSecurity> -> basic.disable()}
             .csrf {csrf: CsrfConfigurer<HttpSecurity> -> csrf.disable()}
             .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
             .sessionManagement { session:
@@ -61,8 +58,7 @@ class SecurityConfig {
             }
             .authorizeHttpRequests {
                     authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers("/auth/signin", "/auth/refresh/**", "/v3/api-docs/**", "/swagger-ui/**")
-                .permitAll()
+                .requestMatchers("/auth/signin", "/auth/refresh/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .requestMatchers("/users").denyAll()
             }

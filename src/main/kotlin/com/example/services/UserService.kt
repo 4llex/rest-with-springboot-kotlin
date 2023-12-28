@@ -16,7 +16,7 @@ class UserService(
     private val logger = Logger.getLogger(UserService::class.java.name)
 
     override fun loadUserByUsername(username: String?): UserDetails {
-        logger.info("Finding on User with UserName $username")
+        logger.info("loadUserByUsername on User with UserName $username")
 
         val user = repository.findByUsername(username)
         return user ?: throw UsernameNotFoundException("UserName $username not found!")
