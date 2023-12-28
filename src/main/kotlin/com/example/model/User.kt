@@ -6,32 +6,32 @@ import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "users")
-data class User(
+class User : UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    var id: Long = 0
 
     @Column(name = "user_name", unique = true)
-    var userName: String? = null,
+    var userName: String? = null
 
     @Column(name = "full_name")
-    var fullName: String? = null,
+    var fullName: String? = null
 
     @Column(name = "password")
-    private var password: String? = null,
+    private var password: String? = null
 
     @Column(name = "account_non_expired")
-    var accountNonExpired: Boolean? = null,
+    var accountNonExpired: Boolean? = null
 
     @Column(name = "account_non_locked")
-    var accountNonLocked: Boolean? = null,
+    var accountNonLocked: Boolean? = null
 
     @Column(name = "credentials_non_expired")
-    var credentialsNonExpired: Boolean? = null,
+    var credentialsNonExpired: Boolean? = null
 
     @Column(name = "enabled")
-    var enabled: Boolean? = null,
+    var enabled: Boolean? = null
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,10 +41,8 @@ data class User(
     )
     var permissions: List<Permission>? = null
 
-): UserDetails {
-
     val roles: List<String?>
-        get() {
+        get(){
             val roles: MutableList<String?> = ArrayList()
             for (permission in permissions!!) {
                 roles.add(permission.description)
