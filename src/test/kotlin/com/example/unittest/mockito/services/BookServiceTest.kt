@@ -118,7 +118,7 @@ class BookServiceTest {
             RequiredObjectsNullException::class.java
         ) { service.create(null) }
 
-        val expectedMessage = "t is not allowed to persost a null object"
+        val expectedMessage = "It is not allowed to persist a null object"
         val actualMessage = exception.message
         assertTrue(actualMessage!!.contains(expectedMessage))
     }
@@ -129,7 +129,7 @@ class BookServiceTest {
             RequiredObjectsNullException::class.java
         ) { service.update(null) }
 
-        val expectedMessage = "t is not allowed to persost a null object"
+        val expectedMessage = "It is not allowed to persist a null object"
         val actualMessage = exception.message
         assertTrue(actualMessage!!.contains(expectedMessage))
     }
