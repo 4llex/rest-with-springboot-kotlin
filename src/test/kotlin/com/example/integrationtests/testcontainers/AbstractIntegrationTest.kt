@@ -28,7 +28,7 @@ open class AbstractIntegrationTest {
             private var mysql: MySQLContainer<*> = MySQLContainer("mysql:8.0.28")
 
             private fun startContainers() {
-                Startables.deepStart(Stream.of(mysql)).join()
+                Startables.deepStart(Stream.of(mysql.withStartupTimeoutSeconds(800))).join()
             }
 
             private fun createConnectionConfiguration(): MutableMap<String, Any> {
